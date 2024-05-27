@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PlayScreen</class>
+ <widget class="QWidget" name="PlayScreen">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QPushButton" name="gotomain">
+   <property name="geometry">
+    <rect>
+     <x>682</x>
+     <y>560</y>
+     <width>111</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>BACK TO MAIN</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="drawbase">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>80</y>
+     <width>83</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>BASE</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="drawhead">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>130</y>
+     <width>83</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>HEAD</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="drawbody">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>180</y>
+     <width>83</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>BODY</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="drawrightarm">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>240</y>
+     <width>141</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DRAW RIGHT ARM</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="drawleftarm">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>290</y>
+     <width>141</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DRAW LEFT ARM</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="drawrightleg">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>340</y>
+     <width>141</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DRAW RIGHT LEG</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="drawleftleg">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>380</y>
+     <width>141</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DRAW LEFT LEG</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
