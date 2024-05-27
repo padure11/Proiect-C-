@@ -4,7 +4,7 @@
 PlayScreen::PlayScreen(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::PlayScreen)
-    , isbasedrawen(false)
+    , isbasedrawen(true)
     , isheaddrawen(false)
     , isbodydrawen(false)
     , isleftarmdrawen(false)
@@ -14,13 +14,6 @@ PlayScreen::PlayScreen(QWidget *parent)
 {
     ui->setupUi(this);
 
-    connect(this, &PlayScreen::DrawBaseClicked, this, &PlayScreen::drawBase);
-    connect(this, &PlayScreen::DrawHeadClicked, this, &PlayScreen::drawHead);
-    connect(this, &PlayScreen::DrawBodyClicked, this, &PlayScreen::drawBody);
-    connect(this, &PlayScreen::DrawRightArm, this, &PlayScreen::drawRightArm);
-    connect(this, &PlayScreen::DrawLeftArm, this, &PlayScreen::drawLeftArm);
-    connect(this, &PlayScreen::DrawRightLeg, this, &PlayScreen::drawRightLeg);
-    connect(this, &PlayScreen::DrawLeftLeg, this, &PlayScreen::drawLeftLeg);
 }
 
 PlayScreen::~PlayScreen()
@@ -35,14 +28,16 @@ void PlayScreen::paintEvent(QPaintEvent *event)
         QPainter painter(this);
         painter.drawLine(75, 400, 225, 400);
         painter.drawLine(150, 400, 150, 200);
-        painter.drawLine(150, 240, 180, 200);
         painter.drawLine(150, 200, 250, 200);
         painter.drawLine(250, 200, 250, 225);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.drawLine(150, 240, 180, 200);
     }
 
     if (isheaddrawen) {
         QPainter painter(this);
-         painter.drawEllipse(238, 225, 25,25);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.drawEllipse(238, 225, 25,25);
     }
 
     if (isbodydrawen) {
@@ -52,23 +47,29 @@ void PlayScreen::paintEvent(QPaintEvent *event)
 
     if (isrightarmdrawen) {
         QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(250, 260, 215, 280);
     }
 
     if (isleftarmdrawen) {
         QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(250, 260, 285, 280);
     }
 
     if (isrightlegdrawen) {
         QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(250, 325, 215, 350);
     }
 
     if (isleftlegdrawen) {
         QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(250, 325, 285, 350);
     }
+
+
 }
 
 void PlayScreen::drawBase()
@@ -80,7 +81,7 @@ void PlayScreen::drawBase()
 void PlayScreen::drawHead()
 {
     isheaddrawen = true;
-    update();
+        update();
 }
 
 void PlayScreen::drawBody()
@@ -109,6 +110,7 @@ void PlayScreen::drawLeftLeg()
 
 void PlayScreen::drawRightLeg()
 {
+
     isrightlegdrawen = true;
     update();
 }
@@ -117,48 +119,78 @@ void PlayScreen::drawRightLeg()
 
 void PlayScreen::on_gotomain_clicked()
 {
+    isbodydrawen = false;
+    isheaddrawen = false;
+    isrightarmdrawen = false;
+    isleftarmdrawen = false;
+    isrightlegdrawen = false;
+    isleftlegdrawen = false;
+    literefolosite.clear();
+    literebune.clear();
     emit MainClicked();
 }
 
 
-void PlayScreen::on_drawbase_clicked()
-{
-    emit DrawBaseClicked();
+void PlayScreen::letter_handler() {
+    QString litera = ui->literainput->text();
+    QString cuvant = "cuvant";
+
+    if (litera.size() == 1 && count(literefolosite.begin(), literefolosite.end(), litera) == 0) {
+        if (cuvant.contains(litera)) {
+
+            if (count(literebune.begin(), literebune.end(), litera) == 0) {
+                literebune.push_back(litera);
+                QMessageBox::warning(this, "BRAVO", "ESTI TARE SEFULE");
+            }
+
+            if (int(literebune.size()) == int(cuvant.size())) {
+                QMessageBox::warning(this, "ESTI INCREDIBIL", "BRAVO TATA");
+            }
+        }
+        else {
+
+            literefolosite.push_back(litera);
+            if (isheaddrawen == false) {
+                drawHead();
+            }
+            else if (isbodydrawen == false) {
+                drawBody();
+            }
+            else if (isbodydrawen == false) {
+                drawBody();
+            }
+            else if (isrightarmdrawen == false) {
+                drawRightArm();
+            }
+            else if (isleftarmdrawen == false) {
+                drawLeftArm();
+            }
+            else if (isrightlegdrawen == false) {
+                drawRightLeg();
+            }
+            else if (isleftlegdrawen == false) {
+                drawLeftLeg();
+                QMessageBox::warning(this,"AI PIERDUT", "NT BRO, NEXT TIME MAYBE");
+            }
+        }
+    }
+    else {
+        QMessageBox::warning(this, "NO SE PUEDE", "NU POTI SA REINTRODUCI O LITERA DEJA FOLOSITA");
+    }
 }
 
-
-void PlayScreen::on_drawhead_clicked()
+void PlayScreen::draw_literefolosite()
 {
-    emit DrawHeadClicked();
+
 }
 
-
-void PlayScreen::on_drawbody_clicked()
+void PlayScreen::draw_literebune()
 {
-    emit DrawBodyClicked();
+
 }
 
-
-void PlayScreen::on_drawrightarm_clicked()
+void PlayScreen::on_confirmlitera_clicked()
 {
-    emit DrawRightArm();
-}
-
-
-void PlayScreen::on_drawleftarm_clicked()
-{
-    emit DrawLeftArm();
-}
-
-
-void PlayScreen::on_drawrightleg_clicked()
-{
-    emit DrawRightLeg();
-}
-
-
-void PlayScreen::on_drawleftleg_clicked()
-{
-    emit DrawLeftLeg();
+    letter_handler();
 }
 
