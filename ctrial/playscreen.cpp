@@ -11,6 +11,8 @@ PlayScreen::PlayScreen(QWidget *parent)
     , isrightarmdrawen(false)
     , isleftlegdrawen(false)
     , isrightlegdrawen(false)
+    , issetupworddrawen(true)
+    , iswordupdate(false)
 {
     ui->setupUi(this);
 
@@ -24,9 +26,9 @@ PlayScreen::~PlayScreen()
 void PlayScreen::paintEvent(QPaintEvent *event)
 {
     QWidget::paintEvent(event);
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
     if (isbasedrawen) {
-        QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(75, 400, 225, 400);
         painter.drawLine(150, 400, 150, 200);
         painter.drawLine(150, 200, 250, 200);
@@ -35,42 +37,61 @@ void PlayScreen::paintEvent(QPaintEvent *event)
     }
 
     if (isheaddrawen) {
-        QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawEllipse(238, 225, 25,25);
     }
 
     if (isbodydrawen) {
-        QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(250, 250, 250, 325);
     }
 
     if (isrightarmdrawen) {
-        QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(250, 260, 215, 280);
     }
 
     if (isleftarmdrawen) {
-        QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(250, 260, 285, 280);
     }
 
     if (isrightlegdrawen) {
-        QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(250, 325, 215, 350);
     }
 
     if (isleftlegdrawen) {
-        QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(250, 325, 285, 350);
     }
 
+    if (issetupworddrawen) {
+        int x1 = 350;
+        int x2 = 360;
+        int y1 = 350;
+        int y2 = 350;
+        for (int i=0;i<cuvant.size();i++) {
+            painter.drawLine(x1, y1, x2, y2);
+            x1=x1+15;
+            x2=x2+15;
+        }
 
+        painter.drawText(352, 345, QString(cuvant[0]));
+
+        for (int i=1;i<cuvant.size()-1;i++) {
+            if (cuvant[i] == cuvant[0] || cuvant[i] == cuvant[cuvant.size()-1]) {
+                painter.drawText(352 + i*15, 345, cuvant[i]);
+            }
+        }
+
+        painter.drawText(352 + (cuvant.size()-1)*15, 345, cuvant[cuvant.size()-1]);
+
+
+    }
+
+
+    if (iswordupdate) {
+        for (int i=0;i<cuvant.size();i++) {
+            if (count(literebune.begin(), literebune.end(), cuvant[i]) == 1) {
+                painter.drawText(352 + i*15, 345, cuvant[i]);
+            }
+        }
+    }
 }
 
 void PlayScreen::drawBase()
@@ -82,7 +103,7 @@ void PlayScreen::drawBase()
 void PlayScreen::drawHead()
 {
     isheaddrawen = true;
-        update();
+    update();
 }
 
 void PlayScreen::drawBody()
@@ -134,17 +155,24 @@ void PlayScreen::on_gotomain_clicked()
 
 void PlayScreen::letter_handler() {
     QString litera = ui->literainput->text();
-    QString cuvant = "cuvant";
+
+    litera = litera.toUpper();
+
+    literefolosite.push_back(cuvant[0]);
+    literefolosite.push_back(cuvant[cuvant.size()-1]);
+    literebune.push_back(cuvant[0]);
+    literebune.push_back(cuvant[cuvant.size()-1]);
 
     if (litera.size() == 1 && count(literefolosite.begin(), literefolosite.end(), litera) == 0) {
         if (cuvant.contains(litera)) {
 
-            if (count(literebune.begin(), literebune.end(), litera) == 0) {
+            if (count(literefolosite.begin(), literefolosite.end(), litera) == 0) {
                 literebune.push_back(litera);
-                QMessageBox::warning(this, "BRAVO", "ESTI TARE SEFULE");
+                literefolosite.push_back(litera);
+                redrawWord();
             }
 
-            if (int(literebune.size()) == int(cuvant.size())) {
+            if (checkWin()) {
                 QMessageBox::warning(this, "ESTI INCREDIBIL", "BRAVO TATA");
             }
         }
@@ -180,18 +208,26 @@ void PlayScreen::letter_handler() {
     }
 }
 
-void PlayScreen::draw_literefolosite()
+void PlayScreen::redrawWord()
 {
-
+    iswordupdate = true;
+    update();
 }
 
-void PlayScreen::draw_literebune()
-{
-
-}
 
 void PlayScreen::on_confirmlitera_clicked()
 {
     letter_handler();
+    ui->literainput->clear();
+}
+
+int PlayScreen::checkWin()
+{
+    for (int i=0;i<cuvant.size();i++) {
+        if (count(literebune.begin(), literebune.end(), cuvant[i]) == 0) {
+            return 0;
+        }
+    }
+    return 1;
 }
 

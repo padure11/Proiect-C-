@@ -2,6 +2,10 @@
 #define LEADERBOARDMENU_H
 
 #include <QWidget>
+#include <QPainter>
+#include <QEvent>
+#include <QFile>
+#include <QTextStream>
 
 namespace Ui {
 class LeaderboardMenu;
@@ -17,6 +21,9 @@ public:
 
 private:
     Ui::LeaderboardMenu *ui;
+
+protected:
+    void paintEvent(QPaintEvent *event);
 
 signals:
     void MainClicked();

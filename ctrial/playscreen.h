@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMessageBox>
+#include <QDebug>
 
 namespace Ui {
 class PlayScreen;
@@ -26,9 +27,13 @@ private:
     bool isrightarmdrawen = false; // variabila pentru a stii daca mana stanga este desenat
     bool isleftlegdrawen = false; // variabila pentru a stii daca piciorul drept este desenat
     bool isrightlegdrawen = false; // variabila pentru a stii daca piciorul stang este desenat
-    int whattodraw = 0;
+    bool issetupworddrawen = false;
+    bool iswordupdate = false;
+    QString cuvant = "ENCICLOPEDIA";
     std::vector<QString>literefolosite;
     std::vector<QString>literebune;
+
+
 
 protected:
     void paintEvent(QPaintEvent *event); // acesta este event handler-ul pentru a desenat diferitele parti
@@ -46,9 +51,9 @@ private slots: // functii
     void drawRightLeg();
     void on_gotomain_clicked();
     void letter_handler();
-    void draw_literefolosite();
-    void draw_literebune();
+    void redrawWord();
     void on_confirmlitera_clicked();
+    int checkWin();
 };
 
 #endif // PLAYSCREEN_H
