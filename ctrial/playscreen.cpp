@@ -26,11 +26,11 @@ void PlayScreen::paintEvent(QPaintEvent *event)
     QWidget::paintEvent(event);
     if (isbasedrawen) {
         QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(75, 400, 225, 400);
         painter.drawLine(150, 400, 150, 200);
         painter.drawLine(150, 200, 250, 200);
         painter.drawLine(250, 200, 250, 225);
-        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(150, 240, 180, 200);
     }
 
@@ -42,6 +42,7 @@ void PlayScreen::paintEvent(QPaintEvent *event)
 
     if (isbodydrawen) {
         QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
         painter.drawLine(250, 250, 250, 325);
     }
 
