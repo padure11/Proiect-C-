@@ -13,6 +13,7 @@ PlayScreen::PlayScreen(QWidget *parent)
     , isrightlegdrawen(false)
     , issetupworddrawen(true)
     , iswordupdate(false)
+    , a("admin")
 {
     ui->setupUi(this);
 
@@ -28,6 +29,10 @@ void PlayScreen::paintEvent(QPaintEvent *event)
     QWidget::paintEvent(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
+
+    painter.setFont(QFont("Times", 20));
+    painter.drawText(650, 50, QString::number(a.scor));
+    painter.setFont(QFont("Times", 14));
     if (isbasedrawen) {
         painter.drawLine(75, 400, 225, 400);
         painter.drawLine(150, 400, 150, 200);
@@ -61,8 +66,11 @@ void PlayScreen::paintEvent(QPaintEvent *event)
     }
 
     if (issetupworddrawen) {
+
+
+
         int x1 = 350;
-        int x2 = 360;
+        int x2 = 363;
         int y1 = 350;
         int y2 = 350;
         for (int i=0;i<cuvant.size();i++) {
@@ -71,16 +79,15 @@ void PlayScreen::paintEvent(QPaintEvent *event)
             x2=x2+15;
         }
 
-        painter.drawText(352, 345, QString(cuvant[0]));
+        painter.drawText(350, 345, QString(cuvant[0]));
 
         for (int i=1;i<cuvant.size()-1;i++) {
             if (cuvant[i] == cuvant[0] || cuvant[i] == cuvant[cuvant.size()-1]) {
-                painter.drawText(352 + i*15, 345, cuvant[i]);
+                painter.drawText(350 + i*15, 345, cuvant[i]);
             }
         }
 
-        painter.drawText(352 + (cuvant.size()-1)*15, 345, cuvant[cuvant.size()-1]);
-
+        painter.drawText(350 + (cuvant.size()-1)*15, 345, cuvant[cuvant.size()-1]);
 
     }
 
@@ -88,7 +95,7 @@ void PlayScreen::paintEvent(QPaintEvent *event)
     if (iswordupdate) {
         for (int i=0;i<cuvant.size();i++) {
             if (count(literebune.begin(), literebune.end(), cuvant[i]) == 1) {
-                painter.drawText(352 + i*15, 345, cuvant[i]);
+                painter.drawText(350 + i*15, 345, cuvant[i]);
             }
         }
     }
@@ -165,7 +172,7 @@ void PlayScreen::letter_handler() {
 
     if (litera.size() == 1 && count(literefolosite.begin(), literefolosite.end(), litera) == 0) {
         if (cuvant.contains(litera)) {
-
+            a.scor += 10;
             if (count(literefolosite.begin(), literefolosite.end(), litera) == 0) {
                 literebune.push_back(litera);
                 literefolosite.push_back(litera);
@@ -173,7 +180,8 @@ void PlayScreen::letter_handler() {
             }
 
             if (checkWin()) {
-                QMessageBox::warning(this, "ESTI INCREDIBIL", "BRAVO TATA");
+                QMessageBox::warning(this, "ESTI INCREDIBIL", "+100 LA SCOR");
+                remakePlayScreen();
             }
         }
         else {
@@ -199,7 +207,9 @@ void PlayScreen::letter_handler() {
             }
             else if (isleftlegdrawen == false) {
                 drawLeftLeg();
-                QMessageBox::warning(this,"AI PIERDUT", "NT BRO, NEXT TIME MAYBE");
+                QMessageBox::warning(this,"AI PIERDUT", "NEXT TIME MAYBE");
+                writescore();
+                emit MainClicked();
             }
         }
     }
@@ -219,6 +229,34 @@ void PlayScreen::on_confirmlitera_clicked()
 {
     letter_handler();
     ui->literainput->clear();
+}
+
+void PlayScreen::remakePlayScreen()
+{
+    isbodydrawen = false;
+    isheaddrawen = false;
+    isrightarmdrawen = false;
+    isleftarmdrawen = false;
+    isrightlegdrawen = false;
+    isleftlegdrawen = false;
+    literefolosite.clear();
+    literebune.clear();
+    a.scor += 100;
+    cuvant = "MAGICIAN";
+}
+
+void PlayScreen::writescore()
+{
+    QString filePath = "C:\\FACULTATE\\AN I\\SEM II\\P2\\Proiect-C-\\ctrial\\build\\Desktop_Qt_6_7_1_MinGW_64_bit-Debug\\tabela_scor.txt";
+
+    QFile file(filePath);
+    if (file.open(QIODevice::Append | QIODevice::ReadWrite)) {
+        QTextStream stream(&file);
+        stream << a.scor;
+    } else {
+        QMessageBox::warning(this, "File Error", "Could not open tabela_scor.txt");
+    }
+    file.close();
 }
 
 int PlayScreen::checkWin()

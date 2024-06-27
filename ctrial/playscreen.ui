@@ -16,50 +16,50 @@
   <widget class="QPushButton" name="gotomain">
    <property name="geometry">
     <rect>
-     <x>682</x>
+     <x>680</x>
      <y>560</y>
      <width>111</width>
      <height>29</height>
     </rect>
    </property>
    <property name="text">
-    <string>BACK TO MAIN</string>
+    <string>BACK</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="literainput">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>90</y>
-     <width>113</width>
-     <height>28</height>
+     <x>440</x>
+     <y>360</y>
+     <width>31</width>
+     <height>41</height>
     </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>100</y>
-     <width>141</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>INTRODU O LITERA </string>
    </property>
   </widget>
   <widget class="QPushButton" name="confirmlitera">
    <property name="geometry">
     <rect>
-     <x>590</x>
-     <y>90</y>
-     <width>83</width>
-     <height>29</height>
+     <x>480</x>
+     <y>360</y>
+     <width>61</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
     <string>ENTER</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>370</y>
+     <width>111</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ENTER A LETTER</string>
    </property>
   </widget>
  </widget>

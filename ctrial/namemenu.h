@@ -3,6 +3,13 @@
 
 #include <QWidget>
 #include <QMessageBox>
+#include "jucator.h"
+#include <QPainter>
+#include <QDebug>
+#include <QFile>
+#include <QDir>
+#include <QTextStream>
+#include <QCoreApplication>
 
 namespace Ui {
 class NameMenu;
@@ -14,6 +21,7 @@ class NameMenu : public QWidget
 
 public:
     explicit NameMenu(QWidget *parent = nullptr);
+    void writename(QString);
     ~NameMenu();
 
 private:

@@ -5,6 +5,13 @@
 #include <QPainter>
 #include <QMessageBox>
 #include <QDebug>
+#include <QFile>
+#include <QDir>
+#include <QTextStream>
+#include <QCoreApplication>
+
+
+#include "jucator.h"
 
 namespace Ui {
 class PlayScreen;
@@ -20,7 +27,7 @@ public:
 
 private:
     Ui::PlayScreen *ui;
-    bool isbasedrawen = false; // variabila pentru a stii daca baza spanzutaoarei este desenat
+    bool isbasedrawen = false; // variabila pentru a stii daca baza spanzutaoarei este desenata
     bool isheaddrawen = false; // variabila pentru a stii daca capul este desenat
     bool isbodydrawen = false; // variabila pentru a stii daca corpul este desenat
     bool isleftarmdrawen = false; // variabila pentru a stii daca mana dreapta este desenat
@@ -32,7 +39,8 @@ private:
     QString cuvant = "ENCICLOPEDIA";
     std::vector<QString>literefolosite;
     std::vector<QString>literebune;
-
+    Jucator a;
+    std::vector<QString> alfabet;
 
 
 protected:
@@ -53,6 +61,8 @@ private slots: // functii
     void letter_handler();
     void redrawWord();
     void on_confirmlitera_clicked();
+    void remakePlayScreen();
+    void writescore();
     int checkWin();
 };
 
