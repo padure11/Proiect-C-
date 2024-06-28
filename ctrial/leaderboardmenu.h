@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QMap>
+#include <QPair>
 
 namespace Ui {
 class LeaderboardMenu;

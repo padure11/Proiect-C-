@@ -9,8 +9,6 @@
 #include <QDir>
 #include <QTextStream>
 #include <QCoreApplication>
-
-
 #include "jucator.h"
 
 namespace Ui {
@@ -36,11 +34,13 @@ private:
     bool isrightlegdrawen = false; // variabila pentru a stii daca piciorul stang este desenat
     bool issetupworddrawen = false;
     bool iswordupdate = false;
-    QString cuvant = "ENCICLOPEDIA";
+    QString cuvant;
     std::vector<QString>literefolosite;
     std::vector<QString>literebune;
     Jucator a;
     std::vector<QString> alfabet;
+    std::vector<QString> w;
+    int dim;
 
 
 protected:
@@ -62,7 +62,11 @@ private slots: // functii
     void redrawWord();
     void on_confirmlitera_clicked();
     void remakePlayScreen();
+    void remakePlayScreenn();
     void writescore();
+    QString generateword();
+    void generateList();
+    void deleteword(int);
     int checkWin();
 };
 

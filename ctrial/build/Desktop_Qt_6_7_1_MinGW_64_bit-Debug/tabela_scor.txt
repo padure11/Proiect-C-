@@ -1,1 +1,4 @@
-ASD,190
+Padure,560
+Purle,560
+Stoica,160
+David,10

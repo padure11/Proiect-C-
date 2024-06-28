@@ -16,7 +16,7 @@ PlayScreen::PlayScreen(QWidget *parent)
     , a("admin")
 {
     ui->setupUi(this);
-
+    cuvant = generateword().toUpper();
 }
 
 PlayScreen::~PlayScreen()
@@ -156,6 +156,19 @@ void PlayScreen::on_gotomain_clicked()
     isleftlegdrawen = false;
     literefolosite.clear();
     literebune.clear();
+
+
+    QString filePath = "C:\\FACULTATE\\AN I\\SEM II\\P2\\Proiect-C-\\ctrial\\build\\Desktop_Qt_6_7_1_MinGW_64_bit-Debug\\tabela_scor.txt";
+
+    QFile file(filePath);
+    if (file.open(QIODevice::Append | QIODevice::ReadWrite)) {
+        QTextStream stream(&file);
+        stream << a.scor << '\n';
+    } else {
+        QMessageBox::warning(this, "File Error", "Could not open tabela_scor.txt");
+    }
+    file.close();
+
     emit MainClicked();
 }
 
@@ -207,8 +220,9 @@ void PlayScreen::letter_handler() {
             }
             else if (isleftlegdrawen == false) {
                 drawLeftLeg();
-                QMessageBox::warning(this,"AI PIERDUT", "NEXT TIME MAYBE");
+                QMessageBox::warning(this,"AI PIERDUT", "NEXT TIME MAYBE\nCUVANTUL ERA:\n" + cuvant);
                 writescore();
+                remakePlayScreenn();
                 emit MainClicked();
             }
         }
@@ -242,7 +256,21 @@ void PlayScreen::remakePlayScreen()
     literefolosite.clear();
     literebune.clear();
     a.scor += 100;
-    cuvant = "MAGICIAN";
+    cuvant = generateword().toUpper();
+}
+
+void PlayScreen::remakePlayScreenn()
+{
+    isbodydrawen = false;
+    isheaddrawen = false;
+    isrightarmdrawen = false;
+    isleftarmdrawen = false;
+    isrightlegdrawen = false;
+    isleftlegdrawen = false;
+    literefolosite.clear();
+    literebune.clear();
+    a.scor = 0;
+    cuvant = generateword().toUpper();
 }
 
 void PlayScreen::writescore()
@@ -252,11 +280,45 @@ void PlayScreen::writescore()
     QFile file(filePath);
     if (file.open(QIODevice::Append | QIODevice::ReadWrite)) {
         QTextStream stream(&file);
-        stream << a.scor;
+        stream << a.scor << '\n';
     } else {
         QMessageBox::warning(this, "File Error", "Could not open tabela_scor.txt");
     }
     file.close();
+}
+
+QString PlayScreen::generateword()
+{
+    if(dim <= 0)
+        generateList();
+
+    int randIndex = rand()%100;
+    QString guess = w[randIndex];
+    deleteword(randIndex);
+    return guess;
+}
+
+void PlayScreen::generateList()
+{
+    QString filePath = "C:\\FACULTATE\\AN I\\SEM II\\P2\\Proiect-C-\\ctrial\\build\\Desktop_Qt_6_7_1_MinGW_64_bit-Debug\\words.txt";
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(nullptr, "File Error", "Could not open the file for reading");
+    }
+
+    QTextStream in(&file);
+    dim = 100;
+    for(int i = 0 ; i < dim ; i++)
+        w.push_back(in.readLine());
+    file.close();
+}
+
+void PlayScreen::deleteword(int index)
+{
+    for(int i = index ; i < dim - 1 ; i++)
+        w[i] = w[i + 1];
+    dim--;
 }
 
 int PlayScreen::checkWin()

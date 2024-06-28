@@ -1,6 +1,7 @@
 #include "leaderboardmenu.h"
 #include "ui_leaderboardmenu.h"
 
+
 LeaderboardMenu::LeaderboardMenu(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::LeaderboardMenu)
@@ -32,7 +33,6 @@ void LeaderboardMenu::readtabela()
     file.close();
 }
 
-
 LeaderboardMenu::~LeaderboardMenu()
 {
     delete ui;
@@ -43,18 +43,33 @@ void LeaderboardMenu::paintEvent(QPaintEvent *event)
 
     readtabela();
     QWidget::paintEvent(event);
+
+    QList<QPair<QString, int>> sortedList;
+    for (auto it = tabela.begin(); it != tabela.end(); ++it) {
+        sortedList.append(qMakePair(it.key(), it.value()));
+    }
+
+    std::sort(sortedList.begin(), sortedList.end(), [](const QPair<QString, int> &a, const QPair<QString, int> &b) {
+        return a.second > b.second;
+    });
+
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.drawLine(230, 300, 480, 300);
+    painter.drawLine(230, 100, 480, 100);
     painter.setFont(QFont("Times", 20));
 
-    for (auto it = tabela.begin(); it != tabela.end(); ++it) {
-        QString name = it.key();
-        int score = it.value();
-        QString text = QString("%1      %2").arg(name).arg(score);
-
-        painter.drawText(300, 150, text);
-
+    int y = 125;
+    int i=0;
+    for (const auto &pair : sortedList) {
+        QString text = QString("%1: %2").arg(pair.first).arg(pair.second);
+        painter.drawText(250, y, text);
+        y += 25;
+        if (i!=10) {
+            i++;
+        }
+        else {
+            break;
+        }
     }
 }
 
